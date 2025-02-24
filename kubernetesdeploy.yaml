@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gaurav-healthcare-deploy
+  labels:
+    app: gaurav-healthcare
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: gaurav-healthcare
+  template:
+    metadata:
+      labels:
+        app: gaurav-healthcare
+    spec:
+      containers:
+      - name: gaurav-healthcare-container
+        image: gaurav4docker/gaurav-healthcare
+        ports:
+        - containerPort: 8082
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: gaurav-healthcare-np-service
+  labels:
+    app: gaurav-healthcare
+spec:
+  selector:
+    app: gaurav-healthcare
+
+  type: NodePort
+  ports:
+  - nodePort: 31030  
+    port: 8082
+    targetPort: 8082
